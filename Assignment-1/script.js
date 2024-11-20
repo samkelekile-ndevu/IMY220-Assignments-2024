@@ -91,18 +91,25 @@ class PetHandler{
 }
 
 //Extend Array Functionality
-// Extend the Array prototype to add PetHandler's member functions
 Array.prototype.findPetsInAgeRange = function (minAge, maxAge) {
   const petHandler = new PetHandler(this); // Use the array as the pets
   return petHandler.findPetsInAgeRange(minAge, maxAge); // Return the filtered pets array
 };
 
-Array.prototype.listPets = function () {
+Array.prototype.listPets = function (...args) {
   const petHandler = new PetHandler(this); // Use the array as the pets
-  return petHandler.listPets(); // Return the list of formatted pet strings
+  return petHandler.listPets(...args); // Return the list of formatted pet strings
 };
 
+Array.prototype.calculateUniqueAdoptionFee = function(...args) {
+  const petHandler = new PetHandler(this); // Use the array as the pets
+  return petHandler.listAdoptedPetsByDate(...args)
+}
 
+Array.prototype.listAdoptedPetsByDate = function(...args) {
+  const petHandler = new PetHandler(this); // Use the array as the pets
+  return petHandler.listAdoptedPetsByDate(...args);
+}
 
 //#####################################################################
 //  Test our PetHandler
