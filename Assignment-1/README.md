@@ -9,10 +9,6 @@ In this folder, you will find the following:
 
 ## Structure
 
-The repository is organized as follows:
-
-Assignment-1/ | └── README.md | └── index.html | └── script.js | └── IMY_220_A1.pdf
-
 Each assignment folder contains:
 
 - Code files (index.html, script.js)
