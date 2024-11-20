@@ -12,28 +12,105 @@ var pets = [
 ];
 
 class PetHandler{
-  constructor(array){
+  constructor(array){ //constructor
     this.pets = array;
   }
 
+  //filter by age
   findPetsInAgeRange(minAge, maxAge){
-    if(Number.isNaN(minAge) || Number.isInteger(maxAge)){
+    if(Number.isNaN(minAge) || Number.isNaN(maxAge)){
       return this.pets;
     }
     else{
-      var filtered_pets = [];
-      this.pets.filter((pet)=>{
-        //Add only pets within age range (inclusive)
-        if(pet.age >= minAge && pet.age <= maxAge){
-          filtered_pets.push(pet);
-        }
+      return this.pets.filter((pet)=>{
+        return pet.age >= minAge && pet.age <= maxAge;
       });
-
-      return filtered_pets;
     }
   }
+
+  //sort
+  listAdoptedPetsByDate(){
+    if(this.pets === undefined){
+        return [];
+    }else{
+      return this.pets.filter((pet)=>{  //filter adopted pets only
+        return pet.adopted === true;  
+      }).sort((a, b)=>{ //now sort by date (most recent)
+        return new Date(b.adoptedDate) - new Date(a.adoptedDate); //for descending order use (a - b)
+      });
+    }
+  }
+
+  listPets() {
+    let petsToDisplay = [];
+
+    if (arguments.length === 0) { //no arguments provided
+        petsToDisplay = this.pets;
+    } else if (arguments.length === 1 && typeof arguments[0] === 'array') {
+        // If one argument is passed and it's an array, use that array
+        petsToDisplay = arguments[0];
+    } else {//multiple arguments
+        petsToDisplay = arguments;
+    }
+
+    // Call the function to create formatted pet items
+    return createPetItem(petsToDisplay);
+
+    // Function to format each pet into a string
+    function createPetItem(petsArr) {
+        return petsArr.map(pet => {
+            const adoptionStatus = pet.adopted ? " | Adopted!" : "";
+            return `${pet.name} | ${pet.species} | ${pet.age} ${adoptionStatus}`;
+        }).join('\n');
+    }
+  } 
+
+  calculateUniqueAdoptionFee() {
+    let pet_names = [];
+  
+    // If one argument is passed and it's a string, treat it as the pet name
+    if (arguments.length === 1 && typeof arguments[0] === 'string') {
+      pet_names[0] = arguments[0];
+    } else {
+      // If multiple arguments are passed, store them as an array
+      pet_names = [...arguments];
+    }
+  
+    // Find pets that match the names provided and accumulate adoption fees
+    const returned_pets = this.pets.filter((pet) => {
+      return pet_names.includes(pet.name)
+
+    });
+  
+    // Calculate the total adoption fee for the specified pets
+    return returned_pets.reduce((accumulator, pet) => {
+      return accumulator + pet.adoptionFee; // Sum the adoption fees
+    }, 0); // Initial adoption fee is 0
+  }
+ 
 }
 
-//Test
+//Extend Array Functionality
+// Extend the Array prototype to add PetHandler's member functions
+Array.prototype.findPetsInAgeRange = function (minAge, maxAge) {
+  const petHandler = new PetHandler(this); // Use the array as the pets
+  return petHandler.findPetsInAgeRange(minAge, maxAge); // Return the filtered pets array
+};
+
+Array.prototype.listPets = function () {
+  const petHandler = new PetHandler(this); // Use the array as the pets
+  return petHandler.listPets(); // Return the list of formatted pet strings
+};
+
+
+
+//#####################################################################
+//  Test our PetHandler
+//#####################################################################
+
 const petHandler = new PetHandler(pets);
-console.log(petHandler.findPetsInAgeRange(3,4));
+// console.log("filterByAge: " + petHandler.findPetsInAgeRange(3,4));
+// console.log("sortByDate: " + petHandler.listAdoptedPetsByDate());
+// console.log("list: " + petHandler.listPets());
+// console.log("calculateUniqueAdoptionFee: " + petHandler.calculateUniqueAdoptionFee("Milo", "Coco", "Milo"))
+console.log("filterByAge: " + petHandler.findPetsInAgeRange(3,4).listPets());
