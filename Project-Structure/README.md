@@ -1,5 +1,5 @@
-#Project Structure
+#  Project Structure
 
-##Brief
+##  Brief
 
 The following project structure is recommended when working with React Js
