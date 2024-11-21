@@ -1,6 +1,6 @@
 import React from 'react';
-import PointInput from './PointInput';
-import Line from './Line';
+import PointInput from './components/PointInput';
+import Line from './components/Line';
 
 class App extends React.Component {
   constructor(props) {
